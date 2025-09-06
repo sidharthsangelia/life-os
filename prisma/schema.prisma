@@ -17,12 +17,12 @@ datasource db {
 model User {
   id        String   @id @default(cuid())
   clerkId   String?
-  email     String?   @unique
+  email     String?  @unique
   name      String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-    // Relations
+  // Relations
   notes       Note[]
   tasks       Task[]
   habits      Habit[]
@@ -32,14 +32,14 @@ model User {
   @@map("users")
 }
 
-
 model Note {
   id        String   @id @default(cuid())
   title     String
   content   String
+  tag       String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   // Relations
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -52,12 +52,12 @@ model Task {
   title       String
   description String?
   completed   Boolean   @default(false)
-  priority    String?    @default("medium") // "high", "medium", "low"
+  priority    String?   @default("medium") // "high", "medium", "low"
   dueDate     DateTime?
   completedAt DateTime?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  
+
   // Relations
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -70,11 +70,11 @@ model Habit {
   name        String
   description String?
   color       String   @default("#6366f1") // For UI customization
-  frequency   String   @default("daily")   // "daily", "weekly"
-  isActive    Boolean  @default(true)      // Soft delete for paused habits
+  frequency   String   @default("daily") // "daily", "weekly"
+  isActive    Boolean  @default(true) // Soft delete for paused habits
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  
+
   // Relations
   userId      String
   user        User              @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -86,9 +86,9 @@ model Habit {
 model HabitCompletion {
   id        String   @id @default(cuid())
   date      DateTime @default(now())
-  notes     String?  // Optional notes for this completion
+  notes     String? // Optional notes for this completion
   createdAt DateTime @default(now())
-  
+
   // Relations
   habitId String
   habit   Habit  @relation(fields: [habitId], references: [id], onDelete: Cascade)
@@ -102,13 +102,13 @@ model HabitCompletion {
 
 model Reflection {
   id        String   @id @default(cuid())
-  title     String?  // Optional title
+  title     String? // Optional title
   content   String
-  mood      String?  // "great", "good", "okay", "bad", "terrible"
+  mood      String? // "great", "good", "okay", "bad", "terrible"
   date      DateTime @default(now())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  
+
   // Relations
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
